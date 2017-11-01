@@ -55,11 +55,11 @@ function build() {
 
 function test(noCoverage) {
   const nycBin = require.resolve('nyc/bin/nyc.js');
-  const nycCommand = `${nycBin} --include=src/**/*.js --source-map=false --instrument=false`;
+  const nycCommand = `node ${nycBin} --include=src/**/*.js --source-map=false --instrument=false`;
   const mochaBin = require.resolve('mocha/bin/_mocha');
   const compiler = join(__dirname, '../src/compiler.js');
   const cmd = noCoverage
-    ? `${mochaBin} --compilers .:${compiler} ${args.join(' ')}`
+    ? `node ${mochaBin} --compilers .:${compiler} ${args.join(' ')}`
     : `${nycCommand} ${mochaBin} --compilers .:${compiler} ${args.join(' ')}`;
   runCommand(cmd);
 }
@@ -71,14 +71,14 @@ function debug() {
 function coveralls() {
   const nycBin = require.resolve('nyc/bin/nyc.js');
   const coverallsBin = require.resolve('coveralls/bin/coveralls.js');
-  const cmd = `${nycBin} report --reporter=text-lcov | ${coverallsBin}`;
+  const cmd = `node ${nycBin} report --reporter=text-lcov | ${coverallsBin}`;
   runCommand(cmd);
 }
 
 function lint() {
   const eslintBin = require.resolve('eslint/bin/eslint.js');
   const config = join(__dirname, '../eslintrc');
-  const cmd = `${eslintBin} --config ${config} --ext .js src test`;
+  const cmd = `node ${eslintBin} --config ${config} --ext .js src test`;
   runCommand(cmd);
 }
 
